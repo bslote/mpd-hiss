@@ -8,7 +8,7 @@ import socket
 import sys
 import time
 
-import Growl
+import gntp.notifier
 import mpd
 
 def msg(text):
@@ -93,13 +93,13 @@ parser.add_argument(
     "--icon",
     dest = "icon_path",
     help = "path to Growl notification icon",
-    default = "~/.mpd-hiss.png"
+    default = "~/mpd-hiss.png"
 )
 
 args = parser.parse_args()
 
 msg("Registering Growl notifier...")
-growler = Growl.GrowlNotifier(
+growler = gntp.notifier.GrowlNotifier(
     applicationName = "mpd-hiss",
     notifications = ["Now Playing"]
 )
@@ -110,7 +110,7 @@ icon_path = abspath(expanduser(args.icon_path))
 
 try:
     msg("Loading icon from %s..." % icon_path)
-    growl_icon = Growl.Image.imageFromPath(icon_path)
+    growl_icon = open(icon_path).read()
     msg("Loaded.")
 except:
     msg("Failed to load icon, falling back to default.")
